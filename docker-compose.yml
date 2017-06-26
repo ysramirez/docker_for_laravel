@@ -1,0 +1,32 @@
+version: '2'
+services:
+  php:
+    build: .
+    container_name: laravel-app
+    image: php:latest
+    volumes:
+      - ../My_Project/laravel/:/var/www/my_project/
+    depends_on:
+      - mysql
+    networks:
+      my_net:
+        ipv4_address: 172.28.5.10
+  mysql:
+    container_name: mysql-app
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=1234
+    volumes:
+      - ../mysql_data :/var/lib/mysql
+    networks:
+      my_net:
+        ipv4_address: 172.28.5.11
+
+networks:
+  my_net:
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
+          ip_range: 172.28.5.0/24
+          gateway: 172.28.5.254
+
